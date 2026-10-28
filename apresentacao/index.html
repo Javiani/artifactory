@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ui-clean-arch — Apresentação</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: #eef0f2;
+        color: #202c36;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      main {
+        min-height: 100svh;
+        display: grid;
+        place-items: center;
+        gap: 24px;
+        padding: 24px;
+      }
+
+      .slide {
+        width: min(100%, 1440px);
+        aspect-ratio: 16 / 9;
+        display: grid;
+        grid-template-columns: 1.08fr 1fr;
+        align-items: center;
+        gap: 32px;
+        padding: 5%;
+        background: white;
+        container-type: inline-size;
+      }
+
+      h1 {
+        margin: 0 0 24px;
+        font-size: clamp(36px, 4.5vw, 64px);
+        letter-spacing: -0.04em;
+      }
+
+      .subtitle {
+        margin: 0 0 36px;
+        max-width: 490px;
+        font-size: clamp(24px, 2.5vw, 36px);
+        line-height: 1.25;
+      }
+
+      .intro {
+        margin: 0 0 24px;
+        color: #59656d;
+        font-size: clamp(18px, 1.8vw, 25px);
+        line-height: 1.4;
+      }
+
+      dl {
+        margin: 0;
+        display: grid;
+        gap: 18px;
+      }
+
+      dt {
+        font-size: clamp(18px, 1.8vw, 25px);
+        font-weight: 700;
+        line-height: 1.3;
+      }
+
+      dd {
+        margin: 2px 0 0;
+        color: #59656d;
+        font-size: clamp(17px, 1.65vw, 23px);
+        line-height: 1.35;
+      }
+
+      .components { color: #6543a0; }
+      .store { color: #a65316; }
+      .services { color: #17658e; }
+      .entities { color: #427018; }
+
+      .responsibility-ui { color: #6543a0; }
+      .responsibility-behavior { color: #17658e; }
+
+      figure {
+        margin: 0;
+      }
+
+      img {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+
+      .responsibilities {
+        grid-template-columns: 1fr 1fr;
+        align-content: center;
+        align-items: start;
+        column-gap: 64px;
+        row-gap: 36px;
+      }
+
+      .responsibilities header,
+      .responsibilities .conclusion {
+        grid-column: 1 / -1;
+      }
+
+      h2 {
+        margin: 0;
+        font-size: clamp(30px, 3.2vw, 46px);
+        letter-spacing: -0.03em;
+      }
+
+      .responsibility {
+        border-top: 3px solid #dce1e5;
+        padding-top: 24px;
+      }
+
+      .responsibility.ui {
+        border-color: #6543a0;
+      }
+
+      .responsibility h3 {
+        margin: 0 0 18px;
+        font-size: clamp(25px, 2.5vw, 36px);
+      }
+
+      .responsibility p,
+      .conclusion {
+        margin: 0 0 18px;
+        font-size: clamp(18px, 1.7vw, 24px);
+        line-height: 1.45;
+      }
+
+      .frameworks {
+        color: #6543a0;
+      }
+
+      .responsibility dl {
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+
+      .responsibility dd {
+        font-size: clamp(17px, 1.5vw, 21px);
+      }
+
+      .conclusion {
+        border-top: 1px solid #dce1e5;
+        padding-top: 22px;
+        color: #59656d;
+      }
+
+      .screen-slide {
+        display: block;
+      }
+
+      .screen-slide .intro {
+        margin-top: 12px;
+        margin-bottom: 16px;
+      }
+
+      .screen-mapping {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 1200 / 560;
+      }
+
+      .screen-mapping .statement-image {
+        position: absolute;
+        left: 6.6667%;
+        top: 1.7857%;
+        width: 20%;
+        height: 85.7143%;
+        object-fit: contain;
+      }
+
+      .screen-mapping .architecture-image {
+        position: absolute;
+        left: 54.1667%;
+        top: 7.1429%;
+        width: 43.3333%;
+        height: auto;
+      }
+
+      .screen-mapping svg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+      }
+
+      .screen-mapping .muted-inner-layers {
+        fill: white;
+        fill-opacity: 0.86;
+      }
+
+      .screen-mapping .connection {
+        fill: none;
+        stroke: #6543a0;
+        stroke-width: 2;
+        marker-end: url(#component-arrow);
+      }
+
+      .screen-mapping text {
+        fill: #6543a0;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 20px;
+      }
+
+      .store-mapping .component-label {
+        font-family: Consolas, "Courier New", monospace;
+        font-size: 23px;
+        fill: #435467;
+      }
+
+      .store-mapping .store-connection {
+        fill: none;
+        stroke: #a65316;
+        stroke-width: 2;
+      }
+
+      .store-mapping .store-caption {
+        fill: #a65316;
+        font-size: 20px;
+      }
+
+      .store-mapping .muted-layer {
+        fill: none;
+        stroke: white;
+        stroke-opacity: 0.86;
+      }
+
+      .service-mapping .flow-label {
+        fill: #59656d;
+        font-size: 20px;
+      }
+
+      .service-mapping .flow-code {
+        fill: #202c36;
+        font-family: Consolas, "Courier New", monospace;
+        font-size: 24px;
+      }
+
+      .service-mapping .service-function {
+        fill: #f0f7f9;
+        stroke: #17658e;
+        stroke-width: 2;
+      }
+
+      .service-mapping .service-flow {
+        fill: none;
+        stroke: #17658e;
+        stroke-width: 2;
+        marker-end: url(#service-arrow);
+      }
+
+      .service-mapping .muted-layer {
+        fill: none;
+        stroke: white;
+        stroke-opacity: 0.86;
+      }
+
+      @media (max-width: 760px) {
+        main {
+          padding: 0;
+        }
+
+        .slide,
+        .slide.responsibilities {
+          aspect-ratio: auto;
+          min-height: 100svh;
+          grid-template-columns: 1fr;
+          padding: 32px 24px;
+        }
+
+        figure {
+          width: min(100%, 480px);
+          justify-self: center;
+        }
+      }
+
+      @media print {
+        @page {
+          size:  landscape;
+          margin: 0;
+        }
+
+        body {
+          background: white;
+          print-color-adjust: exact;
+          -webkit-print-color-adjust: exact;
+        }
+
+        main {
+          min-height: auto;
+          padding: 0;
+        }
+
+        .slide {
+          width: 100%;
+          height: 100vh;
+          break-after: page;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main aria-label="Apresentação ui-clean-arch">
+      <section class="slide" id="slide-1" aria-labelledby="slide-1-title">
+        <div>
+          <h1 id="slide-1-title">ui-clean-arch</h1>
+          <p class="subtitle">Uma arquitetura de frontend organizada por telas</p>
+          <p class="intro">Cada tela é um domínio que reúne:</p>
+          <dl>
+            <div>
+              <dt class="components">Components</dt>
+              <dd>Interface e interações locais</dd>
+            </div>
+            <div>
+              <dt class="store">Store</dt>
+              <dd>Coordenação do estado da tela</dd>
+            </div>
+            <div>
+              <dt class="services">Services</dt>
+              <dd>APIs, armazenamento e integrações</dd>
+            </div>
+            <div>
+              <dt class="entities">Entities</dt>
+              <dd>Adaptação e formatação de dados</dd>
+            </div>
+          </dl>
+        </div>
+        <figure>
+          <img
+            src="imagens/ui-clean-architecture-light.svg"
+            alt="Diagrama da arquitetura com círculos concêntricos: Components, Stores, Services e Entities, do exterior para o centro."
+            width="1200"
+            height="950"
+          >
+        </figure>
+      </section>
+      <section class="slide responsibilities" id="slide-2" aria-labelledby="slide-2-title">
+        <header>
+          <h2 id="slide-2-title"><span class="responsibility-ui">UI</span> e <span class="responsibility-behavior">comportamento</span></h2>
+        </header>
+        <div class="responsibility ui">
+          <h3 class="components">UI</h3>
+          <p><strong>Components</strong> exibem a interface e cuidam das interações locais.</p>
+          <p>Use o framework que fizer sentido para o projeto.</p>
+          <p class="frameworks">React, Vue, Angular, Svelte…<br>ou JavaScript sem framework.</p>
+        </div>
+        <div class="responsibility">
+          <h3 class="responsibility-behavior">Comportamento</h3>
+          <dl>
+            <div>
+              <dt class="store">Store</dt>
+              <dd>Coordena o estado da tela.</dd>
+            </div>
+            <div>
+              <dt class="services">Services</dt>
+              <dd>Acessam integrações externas.</dd>
+            </div>
+            <div>
+              <dt class="entities">Entities</dt>
+              <dd>Adaptam e formatam dados.</dd>
+            </div>
+          </dl>
+          <p>Essas camadas são agnósticas: não dependem do framework de UI.</p>
+        </div>
+        <p class="conclusion">O framework fica na UI. O comportamento mantém seus contratos ao trocar a tecnologia da interface.</p>
+      </section>
+      <section class="slide screen-slide" id="slide-3" aria-labelledby="slide-3-title">
+        <h2 id="slide-3-title"><span class="responsibility-ui">UI</span> / Components</h2>
+        <p class="intro">Components formam a interface. Cada seção com um contexto próprio é um Component.</p>
+        <div class="screen-mapping">
+          <img
+            class="statement-image"
+            src="imagens/real-screen-example.png"
+            alt="Tela bancária com cabeçalho, saldo, atalhos, cartões, lançamentos e navegação inferior."
+            width="887"
+            height="1774"
+          >
+          <img
+            class="architecture-image"
+            src="imagens/ui-clean-architecture-light.svg"
+            alt="Diagrama da arquitetura com destaque em Components e contraste reduzido nas camadas internas."
+            width="1200"
+            height="950"
+          >
+          <svg viewBox="0 0 1200 560" role="img" aria-label="Cabeçalho, saldo, atalhos, cartões, lançamentos e navegação inferior pertencem à camada Components.">
+            <circle class="muted-inner-layers" cx="910" cy="245.8333" r="153" />
+            <defs>
+              <marker id="component-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#6543a0" />
+              </marker>
+            </defs>
+            <path class="connection" d="M 320 44 H 560 L 784 105" />
+            <path class="connection" d="M 320 109 H 540 L 743 158" />
+            <path class="connection" d="M 320 174 H 520 L 724 219" />
+            <path class="connection" d="M 320 256 H 520 L 725 282" />
+            <path class="connection" d="M 320 365 H 540 L 752 348" />
+            <path class="connection" d="M 320 461 H 560 L 792 406" />
+            <text x="344" y="34">Cabeçalho</text>
+            <text x="344" y="99">Saldo</text>
+            <text x="344" y="164">Atalhos</text>
+            <text x="344" y="246">Cartões</text>
+            <text x="344" y="355">Lançamentos</text>
+            <text x="344" y="451">Navegação inferior</text>
+          </svg>
+        </div>
+      </section>
+      <section class="slide screen-slide" id="slide-4" aria-labelledby="slide-4-title">
+        <h2 id="slide-4-title"><span class="responsibility-behavior">Comportamento</span> / Stores</h2>
+        <p class="intro">A Store coordena o estado compartilhado entre os Components da tela.</p>
+        <div class="screen-mapping store-mapping">
+          <img
+            class="statement-image"
+            src="imagens/real-screen-example.png"
+            alt="Tela de extrato composta por cabeçalho, saldo, atalhos, cartões, lançamentos e navegação inferior."
+            width="887"
+            height="1774"
+          >
+          <img
+            class="architecture-image"
+            src="imagens/ui-clean-architecture-light.svg"
+            alt="Diagrama da arquitetura com destaque na camada Stores."
+            width="1200"
+            height="950"
+          >
+          <svg viewBox="0 0 1200 560" role="img" aria-label="Os componentes Cabeçalho, Saldo, Atalhos, Cartões, Lançamentos e Navegação se conectam a uma mesma Store. Ações atualizam o estado e a Store notifica os componentes interessados.">
+            <!-- Fade Components while preserving the original SVG underneath. -->
+            <circle class="muted-layer" cx="910" cy="245.8333" r="183" stroke-width="58" />
+            <!-- Fade Services and Entities, leaving the Stores ring emphasized. -->
+            <circle class="muted-inner-layers" cx="910" cy="245.8333" r="110" />
+
+            <text class="component-label" x="350" y="100">&lt;Cabecalho /&gt;</text>
+            <text class="component-label" x="350" y="160">&lt;Saldo /&gt;</text>
+            <text class="component-label" x="350" y="220">&lt;Atalhos /&gt;</text>
+            <text class="component-label" x="350" y="280">&lt;Cartoes /&gt;</text>
+            <text class="component-label" x="350" y="340">&lt;Lancamentos /&gt;</text>
+            <text class="component-label" x="350" y="400">&lt;Navegacao /&gt;</text>
+
+            <path class="store-connection" d="M 570 92 H 610 M 570 152 H 610 M 570 212 H 610 M 570 272 H 610 M 570 332 H 610 M 570 392 H 610 M 610 92 V 392 M 610 245.8333 H 764.8333" />
+            <circle cx="764.8333" cy="245.8333" r="5" fill="#a65316" />
+            <text class="store-caption" x="630" y="220">ações</text>
+            <text class="store-caption" x="630" y="282">estado</text>
+            <text class="store-caption" x="350" y="462">Uma Store por tela.</text>
+            <text x="350" y="495" style="fill: #59656d; font-size: 18px;">Ex.: ocultar valores atualiza Saldo,</text>
+            <text x="350" y="521" style="fill: #59656d; font-size: 18px;">Cartões e Lançamentos em conjunto.</text>
+          </svg>
+        </div>
+      </section>
+      <section class="slide screen-slide" id="slide-5" aria-labelledby="slide-5-title">
+        <h2 id="slide-5-title"><span class="responsibility-behavior">Comportamento</span> / Services</h2>
+        <p class="intro">Funções assíncronas que conectam a aplicação a recursos externos.</p>
+        <div class="screen-mapping service-mapping">
+          <img
+            class="architecture-image"
+            src="imagens/ui-clean-architecture-light.svg"
+            alt="Diagrama da arquitetura com destaque em Services e demais camadas esmaecidas."
+            width="1200"
+            height="950"
+          >
+          <svg viewBox="0 0 1200 560" role="img" aria-label="Um objeto com accountId entra na função assíncrona buscarSaldo, que consulta uma API e retorna uma Promise de um objeto com accountId e balance. O Service não retém estado entre chamadas.">
+            <defs>
+              <marker id="service-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#17658e" />
+              </marker>
+            </defs>
+            <!-- Fade Components and Stores without changing the source asset. -->
+            <circle class="muted-layer" cx="910" cy="245.8333" r="166" stroke-width="92" />
+            <!-- Preserve Services, fade Entities at the center. -->
+            <circle class="muted-inner-layers" cx="910" cy="245.8333" r="63" />
+
+            <text class="flow-label" x="40" y="52">Entrada: um objeto</text>
+            <text class="flow-code" x="40" y="92">{ accountId: "123" }</text>
+            <path class="service-flow" d="M 290 110 V 158" />
+
+            <rect class="service-function" x="35" y="172" width="540" height="110" rx="8" />
+            <text class="flow-code" x="60" y="214" style="fill: #17658e;">async buscarSaldo({ accountId })</text>
+            <text class="flow-label" x="60" y="254">Consulta a API e prepara o resultado.</text>
+            <path class="service-flow" d="M 290 296 V 344" />
+
+            <text class="flow-label" x="40" y="379">Retorno: Promise de um objeto</text>
+            <text class="flow-code" x="40" y="420">{ accountId: "123", balance: 2345.67 }</text>
+
+            <text class="flow-label" x="40" y="484">Também pode retornar uma lista de objetos.</text>
+            <text class="flow-label" x="40" y="519">Sem estado retido entre chamadas.</text>
+          </svg>
+        </div>
+      </section>
+      <section class="slide screen-slide" id="slide-6" aria-labelledby="slide-6-title">
+        <h2 id="slide-6-title"><span class="responsibility-behavior">Comportamento</span> / Entities</h2>
+        <p class="intro">O Service usa a Entity para entregar dados no formato que a tela precisa.</p>
+        <div class="screen-mapping service-mapping entity-mapping">
+          <img
+            class="architecture-image"
+            src="imagens/ui-clean-architecture-light.svg"
+            alt="Diagrama da arquitetura com destaque em Entities e demais camadas esmaecidas."
+            width="1200"
+            height="950"
+          >
+          <svg viewBox="0 0 1200 560" role="img" aria-label="O Service recebe balance igual a 2345.67 de uma API e passa o objeto à Entity Saldo. A Entity retorna raw igual a 2345.67 e formatted igual a R$ 2.345,67. O Service entrega esse objeto à tela, que exibe formatted sem formatar o valor no Component.">
+            <defs>
+              <marker id="entity-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#427018" />
+              </marker>
+            </defs>
+            <!-- Fade all outer layers while keeping the original Entities artwork. -->
+            <circle class="muted-layer" cx="910" cy="245.8333" r="139" stroke-width="146" />
+
+            <text class="flow-label" x="35" y="35">1. O Service recebe dados da API</text>
+            <text class="flow-code" x="35" y="73">{ balance: 2345.67 }</text>
+            <path d="M 290 91 V 128" fill="none" stroke="#427018" stroke-width="2" marker-end="url(#entity-arrow)" />
+
+            <rect x="30" y="142" width="550" height="104" rx="8" fill="#f3f7ef" stroke="#427018" stroke-width="2" />
+            <text class="flow-code" x="55" y="181" style="fill: #427018;">Saldo({ balance = 0 })</text>
+            <text class="flow-label" x="55" y="220">2. A Entity adapta e formata o valor</text>
+            <path d="M 290 258 V 290" fill="none" stroke="#427018" stroke-width="2" marker-end="url(#entity-arrow)" />
+
+            <text class="flow-code" x="35" y="324">{</text>
+            <text class="flow-code" x="60" y="357">raw: 2345.67,</text>
+            <text class="flow-code" x="60" y="390">formatted: "R$ 2.345,67"</text>
+            <text class="flow-code" x="35" y="423">}</text>
+
+            <text class="flow-label" x="35" y="469">3. O Service retorna o objeto adaptado.</text>
+            <text class="flow-label" x="35" y="500">A tela apenas exibe saldo.formatted.</text>
+            <text class="flow-label" x="35" y="541" style="fill: #427018; font-size: 18px;">Entity: função pura, síncrona e sem estado.</text>
+          </svg>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
